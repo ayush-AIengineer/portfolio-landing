@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { usePortfolioMode } from '../context/PortfolioModeContext';
-import { worksHeading, worksContent, galleryContent, type WorkItem } from '../data/portfolioData';
-import { GalleryCard } from './WorkGallerySection';
+import { worksHeading, worksContent, type WorkItem } from '../data/portfolioData';
 
 export default function FeaturedWorksSection() {
   const { mode } = usePortfolioMode();
@@ -73,7 +72,6 @@ export default function FeaturedWorksSection() {
   };
 
   const headingWords = worksHeading[mode].split(' ');
-  const gallery = galleryContent[mode];
 
   return (
     <section
