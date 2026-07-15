@@ -81,7 +81,7 @@ export default function AboutSection() {
   const headingWords = 'Turning data into intelligence.'.split(' ');
 
   const stats = [
-    { target: '2+', label: 'Years Experience' },
+    { target: '1+', label: 'Years Experience' },
     { target: '20+', label: 'Projects Built' },
     { target: '5+', label: 'Happy Clients' },
   ];
