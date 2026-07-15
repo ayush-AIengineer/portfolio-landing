@@ -19,7 +19,7 @@ export default function HeroSection() {
       setTimeout(() => {
         el.style.transform = 'translateY(0)';
         el.style.opacity = '1';
-      }, 200 + i * 25);
+      }, 200 + i * 25); // stagger 25ms
     });
   }, []);
 
@@ -111,23 +111,26 @@ export default function HeroSection() {
             style={{
               transform: 'translateY(100%)',
               opacity: 0,
-              transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+              transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+              transitionDelay: `${i * 25}ms`,
             }}
           >
-            {char === ' ' ? '\u00A0' : char}
+            {char === ' ' ? ' ' : char}
           </span>
         ))}
       </h1>
 
       {/* Subtitle */}
       <p
-        className="font-body font-light text-center mt-6 transition-all duration-700"
+        className="font-body font-light text-center mt-6 transition-all"
         style={{
           fontSize: 'clamp(1.125rem, 2.5vw, 1.75rem)',
-          color: '#ffffff',
+          color: 'var(--color-foreground)',
           textShadow: '0 1px 12px rgba(0,0,0,0.7)',
           opacity: subtitleVisible ? 1 : 0,
           transform: subtitleVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: `opacity 700ms var(--ease-standard), transform 700ms var(--ease-standard)`,
+          transitionDelay: '600ms',
         }}
       >
         {content.subtitle}
@@ -135,13 +138,15 @@ export default function HeroSection() {
 
       {/* Tagline */}
       <p
-        className="font-body text-center mt-4 max-w-[520px] px-6 transition-all duration-700"
+        className="font-body text-center mt-4 max-w-[520px] px-6 transition-all"
         style={{
           fontSize: '1rem',
-          color: '#ededed',
+          color: 'var(--color-muted-foreground)',
           textShadow: '0 1px 10px rgba(0,0,0,0.75)',
           opacity: taglineVisible ? 1 : 0,
           transform: taglineVisible ? 'translateY(0)' : 'translateY(20px)',
+          transition: `opacity 700ms var(--ease-standard), transform 700ms var(--ease-standard)`,
+          transitionDelay: '900ms',
         }}
       >
         {content.tagline}
@@ -149,17 +154,17 @@ export default function HeroSection() {
 
       {/* CTA Buttons */}
       <div
-        className="flex items-center gap-4 mt-10"
+        className="flex items-center gap-4 mt-10 transition-all"
         style={{
           opacity: taglineVisible ? 1 : 0,
           transform: taglineVisible ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'all 700ms 200ms ease',
+          transition: `all 700ms 200ms var(--ease-standard)`,
         }}
       >
         <a
           href="#works"
           onClick={(e) => handleNavClick(e, '#works')}
-          className="bg-white text-[#0a0a0a] px-8 py-3.5 rounded-lg font-body font-medium text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200"
+          className="bg-[#0a0a0a] text-white border border-white/20 px-8 py-3.5 rounded-lg font-body font-medium text-sm hover:opacity-90 hover:scale-[1.02] transition-all duration-200 ease-standard"
           data-cursor-hover
         >
           View My Work
@@ -167,7 +172,7 @@ export default function HeroSection() {
         <a
           href="#contact"
           onClick={(e) => handleNavClick(e, '#contact')}
-          className="border border-white/30 text-white px-8 py-3.5 rounded-lg font-body font-medium text-sm hover:bg-white/5 transition-all duration-200"
+          className="border border-white/30 text-white px-8 py-3.5 rounded-lg font-body font-medium text-sm hover:bg-white/5 transition-all duration-200 ease-standard"
           data-cursor-hover
         >
           Get in Touch
@@ -176,10 +181,11 @@ export default function HeroSection() {
 
       {/* Scroll Indicator */}
       <div
-        className="absolute left-1/2 -translate-x-1/2 transition-opacity duration-400"
+        className="absolute left-1/2 -translate-x-1/2 transition-opacity"
         style={{
           bottom: '2.5rem',
           opacity: scrollIndicatorVisible ? 1 : 0,
+          transition: 'opacity 400ms var(--ease-standard)',
         }}
       >
         <div

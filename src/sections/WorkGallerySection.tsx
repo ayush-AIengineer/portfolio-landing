@@ -3,11 +3,22 @@ import { usePortfolioMode } from '../context/PortfolioModeContext';
 import { galleryContent } from '../data/portfolioData';
 
 export function GalleryCard({ title, category, image, video }: { title: string; category: string; image: string; video?: string }) {
+  const handleMouseEnter = () => {
+    // Anticipation: slight pull back
+    // In CSS we'll handle via transition
+  };
+
+  const handleMouseLeave = () => {
+    // Follow-through: settle
+  };
+
   return (
     <div
       className="group relative overflow-hidden rounded-xl cursor-pointer"
       style={{ aspectRatio: '4/3' }}
       data-cursor-hover
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Background Media */}
       {video ? (
@@ -22,13 +33,16 @@ export function GalleryCard({ title, category, image, video }: { title: string; 
           className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
           style={{
             filter: 'brightness(0.7)',
-            transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
+            transitionTimingFunction: 'var(--ease-standard)',
+            transition: 'transform 700ms var(--ease-standard), filter 700ms var(--ease-standard)',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.filter = 'brightness(0.9)';
+            e.currentTarget.style.transform = 'scale(1.03)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.filter = 'brightness(0.7)';
+            e.currentTarget.style.filter = 'brightness(0.5)';
+            e.currentTarget.style.transform = 'scale(1)';
           }}
         />
       ) : (
@@ -38,14 +52,17 @@ export function GalleryCard({ title, category, image, video }: { title: string; 
           className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
           style={{
             filter: 'brightness(0.5)',
-            transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
+            transitionTimingFunction: 'var(--ease-standard)',
+            transition: 'transform 700ms var(--ease-standard), filter 700ms var(--ease-standard)',
           }}
           loading="lazy"
           onMouseEnter={(e) => {
             e.currentTarget.style.filter = 'brightness(0.7)';
+            e.currentTarget.style.transform = 'scale(1.03)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.filter = 'brightness(0.5)';
+            e.currentTarget.style.transform = 'scale(1)';
           }}
         />
       )}
@@ -88,6 +105,7 @@ export default function WorkGallerySection() {
       },
       { threshold: 0.3 }
     );
+
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
@@ -113,7 +131,7 @@ export default function WorkGallerySection() {
           maxWidth: 'var(--container-max)',
         }}
       >
-        <div className="text-label text-[#7f7f7f] mb-3">EXPLORE</div>
+        <div className="text-label text-[var(--color-muted)] mb-3">EXPLORE</div>
         <h2
           ref={headingRef}
           className="font-display text-white"
@@ -132,7 +150,8 @@ export default function WorkGallerySection() {
                   style={{
                     transform: 'translateY(100%)',
                     opacity: 0,
-                    transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+                    transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+                    transitionDelay: `${ci * 20}ms`,
                   }}
                 >
                   {char}

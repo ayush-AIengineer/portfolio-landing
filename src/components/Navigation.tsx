@@ -65,7 +65,7 @@ export default function Navigation() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className="text-sm uppercase tracking-widest text-[#e5e5e5] hover:text-white hover:opacity-60 transition-all duration-200 font-body"
+                className="text-sm uppercase tracking-widest font-bold text-white hover:opacity-80 transition-all duration-200 font-body"
                 data-cursor-hover
               >
                 {link.label}

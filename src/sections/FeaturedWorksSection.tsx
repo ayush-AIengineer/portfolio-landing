@@ -14,6 +14,8 @@ export default function FeaturedWorksSection() {
   const flyoverPosRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number>(0);
 
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
   // Heading reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -38,6 +40,7 @@ export default function FeaturedWorksSection() {
   // Mode change animation
   useEffect(() => {
     setWorks(worksContent[mode]);
+    setExpandedIndex(null); // Reset expansion on mode change
   }, [mode]);
 
   // Flyover image tracking
@@ -87,12 +90,12 @@ export default function FeaturedWorksSection() {
         marginRight: 'auto',
       }}
     >
-      <div className="text-label text-[#7f7f7f] mb-3">SELECTED WORKS</div>
+      <div className="text-label text-[var(--color-muted)] mb-3">SELECTED WORKS</div>
       <h2
         ref={headingRef}
         className="font-display text-white"
         style={{
-          fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+          fontSize: 'clamp(2rem, 4vw, 3rem)',
           letterSpacing: '-0.02em',
           lineHeight: 1.0,
         }}
@@ -106,7 +109,8 @@ export default function FeaturedWorksSection() {
                 style={{
                   transform: 'translateY(100%)',
                   opacity: 0,
-                  transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+                  transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+                  transitionDelay: `${ci * 20}ms`,
                 }}
               >
                 {char}
@@ -118,34 +122,65 @@ export default function FeaturedWorksSection() {
 
       {/* Work List */}
       <div style={{ marginTop: 'var(--space-subsection)' }}>
-        {works.map((work, i) => (
-          <div
-            key={`${mode}-${work.name}`}
-            className="group flex flex-col sm:flex-row sm:items-center sm:justify-between py-8 border-b border-white/8 cursor-pointer"
-            style={{
-              animation: `workFadeIn 400ms ease ${i * 80}ms both`,
-            }}
-            onMouseEnter={() => handleItemEnter(work.flyover)}
-            onMouseLeave={handleItemLeave}
-            data-cursor-hover
-          >
-            <span
-              className="font-body text-white group-hover:translate-x-2 group-hover:text-[#e5e5e5] transition-all duration-300 inline-block"
-              style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.875rem)' }}
+        {works.map((work, i) => {
+          const isExpanded = expandedIndex === i;
+          return (
+            <div
+              key={`${mode}-${work.name}`}
+              className="group flex flex-col py-8 border-b border-white/8 cursor-pointer"
+              style={{
+                borderColor: 'var(--color-border)',
+                animation: `workFadeIn 400ms ease ${i * 80}ms both`,
+              }}
+              onMouseEnter={() => handleItemEnter(work.flyover)}
+              onMouseLeave={handleItemLeave}
+              onClick={() => setExpandedIndex(isExpanded ? null : i)}
+              data-cursor-hover
             >
-              {work.name}
-            </span>
-
-            <div className="flex items-center gap-4 mt-3 sm:mt-0">
-              {work.role && (
-                <span className="text-sm font-body text-[#7f7f7f] hidden md:inline text-right">
-                  {work.role}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <span
+                  className="font-body text-white group-hover:translate-x-2 group-hover:text-[var(--color-primary)] transition-all duration-300 inline-block flex items-center gap-3"
+                  style={{ fontSize: 'clamp(1.1rem, 2vw, 1.5rem)' }}
+                >
+                  {work.name}
+                  {work.description && (
+                    <svg
+                      className={`w-5 h-5 transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[var(--color-primary)]' : 'text-white/40'}`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  )}
                 </span>
-              )}
-              <span className="text-sm font-body text-[#7f7f7f] ml-2">{work.year}</span>
+
+                <div className="flex items-center gap-4 mt-3 sm:mt-0">
+                  {work.role && (
+                    <span className="text-sm font-body text-[var(--color-muted)] hidden md:inline text-right">
+                      {work.role}
+                    </span>
+                  )}
+                  <span className="text-sm font-body text-[var(--color-muted)] ml-2">{work.year}</span>
+                </div>
+              </div>
+              
+              <div 
+                className={`grid transition-all duration-500 ease-in-out ${isExpanded ? 'grid-rows-[1fr] mt-6' : 'grid-rows-[0fr]'}`}
+              >
+                <div className="overflow-hidden">
+                  {work.description && (
+                    <div className="bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 p-6 rounded-2xl">
+                      <p className="text-base font-body text-[var(--color-muted-foreground)] max-w-3xl leading-relaxed whitespace-pre-wrap">
+                        {work.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Explore the work section commented out */}
@@ -164,6 +199,7 @@ export default function FeaturedWorksSection() {
             boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
             borderRadius: '8px',
             overflow: 'hidden',
+            border: '1px solid var(--color-border)',
           }}
         >
           <img
@@ -178,10 +214,6 @@ export default function FeaturedWorksSection() {
         @keyframes workFadeIn {
           from { opacity: 0; transform: translateX(20px); }
           to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes galleryFadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </section>

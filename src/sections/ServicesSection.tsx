@@ -49,7 +49,7 @@ export default function ServicesSection() {
       }}
     >
       {/* Section Header */}
-      <div className="text-label text-[#7f7f7f] mb-3">WHAT I DO</div>
+      <div className="text-label text-[var(--color-muted)] mb-3">WHAT I DO</div>
       <h2
         ref={headingRef}
         className="font-display text-white"
@@ -68,7 +68,8 @@ export default function ServicesSection() {
                 style={{
                   transform: 'translateY(100%)',
                   opacity: 0,
-                  transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+                  transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+                  transitionDelay: `${ci * 20}ms`,
                 }}
               >
                 {char}
@@ -90,30 +91,32 @@ export default function ServicesSection() {
               key={title}
               className="group rounded-xl p-8 transition-all duration-400 hover:-translate-y-1"
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)',
+                background: 'var(--color-background-card)',
+                border: '1px solid var(--color-border)',
+                transition: 'background-color var(--transition-fast), border-color var(--transition-fast), transform var(--duration-standard) var(--ease-standard)',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.transform = 'scale(0.98)';
+                e.currentTarget.style.background = 'var(--color-background-hover)';
+                e.currentTarget.style.borderColor = 'var(--color-primary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.background = 'var(--color-background-card)';
+                e.currentTarget.style.borderColor = 'var(--color-border)';
               }}
               data-cursor-hover
             >
               <Icon
                 size={28}
-                className="text-[#7f7f7f] group-hover:text-[#e5e5e5] transition-colors duration-400 mb-6"
+                className="text-[var(--color-muted)] group-hover:text-[var(--color-primary)] transition-colors duration-400 mb-6"
               />
               <h3 className="font-body font-medium text-xl text-white mb-3">
                 {title}
               </h3>
               <p
                 className="font-body text-sm leading-relaxed transition-opacity duration-300"
-                style={{ color: '#e5e5e5' }}
+                style={{ color: 'var(--color-foreground)' }}
               >
                 {servicesContent[mode][i].description}
               </p>

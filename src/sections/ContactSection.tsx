@@ -1,8 +1,21 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Mail, Github, Linkedin, X } from 'lucide-react';
+import { usePortfolioMode } from '../context/PortfolioModeContext';
 
 export default function ContactSection() {
+  usePortfolioMode();
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const mailto = `mailto:ayushpatel.work@outlook.com?subject=Project Inquiry from ${formData.name}&body=${encodeURIComponent(formData.message)}%0D%0A%0D%0AContact:%20${formData.email}`;
+    window.location.href = mailto;
+    setIsModalOpen(false);
+    setFormData({ name: '', email: '', message: '' });
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -20,6 +33,7 @@ export default function ContactSection() {
       },
       { threshold: 0.3 }
     );
+
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, []);
@@ -59,7 +73,8 @@ export default function ContactSection() {
                 style={{
                   transform: 'translateY(100%)',
                   opacity: 0,
-                  transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+                  transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+                  transitionDelay: `${ci * 20}ms`,
                 }}
               >
                 {char}
@@ -73,7 +88,7 @@ export default function ContactSection() {
         className="font-body mt-6 mx-auto max-w-[560px]"
         style={{
           fontSize: '1.125rem',
-          color: '#e5e5e5',
+          color: 'var(--color-foreground)',
           lineHeight: 1.65,
         }}
       >
@@ -81,39 +96,101 @@ export default function ContactSection() {
       </p>
 
       {/* CTA Button */}
-      <a
-        href="mailto:ayushpatel.work@outlook.com"
-        className="inline-block mt-10 bg-white text-[#0a0a0a] px-10 py-4 rounded-lg font-body font-medium text-base hover:scale-[1.03] hover:shadow-[0_4px_24px_rgba(255,255,255,0.15)] transition-all duration-200"
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="inline-block mt-10 bg-white text-black px-10 py-4 rounded-lg font-body font-semibold text-base hover:scale-[1.03] hover:shadow-[0_4px_24px_rgba(255,255,255,0.15)] transition-all duration-200 ease-standard"
         data-cursor-hover
       >
         Start a Conversation
-      </a>
+      </button>
 
       {/* Social Links */}
       <div className="flex items-center justify-center gap-8 mt-8">
-        {[{ label: 'Email', href: 'mailto:ayushpatel.work@outlook.com' }, { label: 'GitHub', href: 'https://github.com/ayushpatel7787' }, { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ayush-patel-846793279' }].map((link) => (
+        {[
+          { label: 'Email', href: 'mailto:ayushpatel.work@outlook.com', icon: <Mail size={18} /> }, 
+          { label: 'GitHub', href: 'https://github.com/ayush-AIengineer', icon: <Github size={18} /> }, 
+          { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ayush-patel-846793279/', icon: <Linkedin size={18} /> }
+        ].map((link) => (
           <a
             key={link.label}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-body text-sm text-[#7f7f7f] hover:text-white transition-colors duration-200"
+            className="flex items-center gap-2 font-body text-sm text-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors duration-200"
             data-cursor-hover
           >
+            {link.icon}
             {link.label}
           </a>
         ))}
       </div>
 
       {/* Footer */}
-      <div
-        className="mt-16 pt-8 border-t text-center"
-        style={{ borderColor: 'rgba(255,255,255,0.08)' }}
-      >
-        <p className="font-body text-xs text-[#7f7f7f]">
-          © 2025 Ayush Patel. AI/ML Engineer.
+      <footer className="mt-32 pb-8 flex flex-col items-center gap-2">
+        <p className="text-xs font-body text-[var(--color-muted-foreground)]">
+          © {new Date().getFullYear()} Ayush Patel. Designed for the AI era.
         </p>
-      </div>
+      </footer>
+
+      {/* Contact Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+          <div 
+            className="bg-[#0a0a0a] border border-white/10 rounded-2xl w-full max-w-lg p-8 relative"
+            style={{ animation: 'workFadeIn 300ms ease both' }}
+          >
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-3xl font-display text-white mb-2">Let's build something.</h3>
+            <p className="text-[var(--color-muted)] mb-8 text-sm">Tell me a bit about your project or idea.</p>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5 text-left">
+              <div>
+                <label className="text-sm font-medium text-white/70 mb-2 block">Name</label>
+                <input 
+                  required
+                  type="text" 
+                  value={formData.name}
+                  onChange={e => setFormData({...formData, name: e.target.value})}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
+                  placeholder="John Doe"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-white/70 mb-2 block">Email</label>
+                <input 
+                  required
+                  type="email" 
+                  value={formData.email}
+                  onChange={e => setFormData({...formData, email: e.target.value})}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors"
+                  placeholder="john@example.com"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-white/70 mb-2 block">Project Details</label>
+                <textarea 
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={e => setFormData({...formData, message: e.target.value})}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors resize-none"
+                  placeholder="I'm looking to build..."
+                />
+              </div>
+              <button 
+                type="submit"
+                className="mt-4 bg-[var(--color-primary)] text-white font-semibold py-4 rounded-lg hover:scale-[1.02] transition-transform duration-200"
+              >
+                Send Inquiry
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

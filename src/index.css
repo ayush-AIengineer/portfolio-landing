@@ -4,57 +4,107 @@
 
 @layer base {
   :root {
-    --background: 0 0% 2%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 8%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 0 0% 8%;
-    --muted-foreground: 0 0% 50%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 12%;
-    --input: 0 0% 12%;
-    --ring: 0 0% 100%;
-    --radius: 0.75rem;
+    /* === Color Tokens (Dual-Color System) === */
+    /* Primary: Blue-600 */
+    --color-primary: 217 91% 60%; /* #2563EB */
+    --color-primary-foreground: 210 40% 98%; /* #F8FAFC */
 
-    --color-bg-primary: #050505;
-    --color-bg-card: rgba(255, 255, 255, 0.03);
-    --color-bg-card-hover: rgba(255, 255, 255, 0.06);
-    --color-bg-elevated: #0a0a0a;
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #e5e5e5;
-    --color-text-muted: #7f7f7f;
-    --color-text-inverse: #0a0a0a;
-    --color-border-subtle: rgba(255, 255, 255, 0.08);
-    --color-border-medium: rgba(255, 255, 255, 0.15);
+    /* Secondary: Amber-500 */
+    --color-secondary: 40 90% 58%; /* #F59E0B */
+    --color-secondary-foreground: 210 40% 98%; /* White text on secondary (adjust if needed) */
 
-    --space-section: clamp(8rem, 15vh, 14rem);
-    --space-subsection: clamp(3rem, 6vh, 5rem);
-    --space-component: 2rem;
-    --space-element: 1rem;
-    --container-max: 1400px;
-    --container-narrow: 900px;
-    --container-wide: 1600px;
-    --page-gutter: clamp(1.5rem, 5vw, 4rem);
-    --radius-card: 12px;
-    --radius-pill: 100px;
-    --radius-button: 8px;
+    /* Neutrals (Dark Theme) */
+    --color-background: 210 30% 5%; /* #020617 (navy-900) */
+    --color-foreground: 210 20% 95%; /* #F1F5F9 (slate-50) */
+    --color-muted: 210 20% 40%; /* #64748B (slate-500) */
+    --color-muted-foreground: 210 15% 60%; /* #94A3B8 (slate-400) */
 
-    --ease-smooth: cubic-bezier(0.19, 1, 0.22, 1);
+    /* Derived shades for depth */
+    --color-background-hover: 210 30% 8%; /* Slightly lighter */
+    --color-background-card: 210 30% 8%; /* Card background */
+    --color-border: 210 20% 20%; /* #334155 (slate-600) */
+    --color-border-light: 210 20% 25%; /* Slightly lighter */
+
+    /* Semantic colors (keep for errors, etc.) */
+    --color-destructive: 0 84.2% 60.2%; /* #FF4444 */
+    --color-destructive-foreground: 0 0% 98%; /* White */
+
+    /* Additional semantic/compatibility colors */
+    --color-accent: 210 20% 95%; /* Same as foreground for subtle accent */
+    --color-accent-foreground: 210 30% 5%; /* Background color for contrast */
+    --color-popover: 210 30% 8%; /* Slightly lighter than background */
+    --color-popover-foreground: 210 20% 95%; /* Foreground */
+    --color-card: 210 30% 8%; /* Card background */
+    --card-foreground: 210 20% 95%; /* Card foreground */
+
+    /* For tailwind compatibility */
+    --border: 210 20% 20%; /* same as --color-border */
+    --input: 210 20% 20%; /* input background */
+    --ring: 217 91% 60%; /* primary color for ring */
+    --background: 210 30% 5%; /* same as --color-background */
+    --foreground: 210 20% 95%; /* same as --color-foreground */
+
+    /* === Motion Tokens === */
+    /* Easing curves */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-    --ease-in-out-smooth: cubic-bezier(0.45, 0.05, 0.55, 0.95);
-    --transition-fast: 200ms;
-    --transition-medium: 500ms;
-    --transition-slow: 800ms;
-    --transition-reveal: 1200ms;
+    --ease-in-expo: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+    --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --ease-in-cubic: cubic-bezier(0.32, 0, 0.675, 0.67);
+    --ease-standard: var(--ease-out-expo); /* Default for entrances */
+    --ease-exit: var(--ease-in-expo);     /* For exits */
+
+    /* Duration */
+    --duration-fast: 100ms;
+    --duration-moderate: 200ms;
+    --duration-standard: 300ms;
+    --duration-slow: 500ms;
+    --duration-very-slow: 800ms;
+
+    /* Stagger */
+    --stagger: 50ms;
+
+    /* === Radii === */
+    --radius: 0.5rem;
+    --radius-card: 0.75rem;
+    --radius-pill: 100rem;
+    --radius-button: 0.5rem;
+
+    /* === Layout === */
+    --page-gutter: clamp(1.5rem, 5vw, 4rem);
+    --container-narrow: 800px;
+    --container-wide: 1200px;
+    --container-max: 1400px;
+    --space-section: clamp(6rem, 15vw, 10rem);
+    --space-subsection: clamp(3rem, 8vw, 5rem);
+
+    /* === Spacing (4px grid) === */
+    --space-px: 1px;
+    --space-0: 0;
+    --space-0-5: 0.125rem; /* 2px */
+    --space-1: 0.25rem;    /* 4px */
+    --space-1-5: 0.375rem; /* 6px */
+    --space-2: 0.5rem;     /* 8px */
+    --space-2-5: 0.75rem;  /* 12px */
+    --space-3: 1rem;       /* 16px */
+    --space-3-5: 1.25rem;  /* 20px */
+    --space-4: 1.5rem;     /* 24px */
+    --space-5: 2rem;       /* 32px */
+    --space-6: 2.5rem;     /* 40px */
+    --space-8: 3rem;       /* 48px */
+
+    /* === Typography === */
+    --font-body: 'Manrope', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+
+    /* === Misc === */
+    --transition-default: var(--duration-standard) var(--ease-standard);
+    --transition-fast: var(--duration-fast) var(--ease-standard);
+  }
+
+  /* dark mode overrides (if needed) - we keep dark only */
+  .dark {
+    /* If we ever support light mode, we'd invert here */
   }
 
   html {
@@ -62,26 +112,35 @@
   }
 
   body {
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-secondary);
-    font-family: 'Manrope', sans-serif;
+    background-color: hsl(var(--color-background));
+    color: hsl(var(--color-foreground));
+    font-family: var(--font-body);
     font-weight: 400;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Reduce motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      /* Override animation durations to be very short */
+      * {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--font-display);
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: hsl(var(--color-foreground));
     line-height: 1.0;
   }
 
   ::selection {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
+    background-color: hsl(var(--color-primary) / 0.2);
+    color: hsl(var(--color-primary-foreground));
   }
 }
 
@@ -93,19 +152,50 @@
 
 @layer utilities {
   .font-display {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--font-display);
   }
 
   .font-body {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
   }
 
   .text-label {
-    font-family: 'Manrope', sans-serif;
+    font-family: var(--font-body);
     font-weight: 500;
     font-size: 0.75rem;
     line-height: 1.4;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  /* Motion utility classes */
+  .transition-xss {
+    transition-property: transform, opacity, filter, backdrop-filter;
+    transition-timing-function: var(--ease-standard);
+    transition-duration: var(--duration-fast);
+  }
+  .transition-xs {
+    transition-duration: var(--duration-moderate);
+  }
+  .transition-s {
+    transition-duration: var(--duration-standard);
+  }
+  .transition-l {
+    transition-duration: var(--duration-slow);
+  }
+
+  /* Easing utilities */
+  .ease-out-expo {
+    transition-timing-function: var(--ease-out-expo);
+  }
+  .ease-in-expo {
+    transition-timing-function: var(--ease-in-expo);
+  }
+  .ease-standard {
+    transition-timing-function: var(--ease-standard);
   }
 }

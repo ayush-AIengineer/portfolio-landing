@@ -42,7 +42,7 @@ function StatCounter({ target, label, inView }: StatProps) {
       >
         {display}
       </div>
-      <div className="text-xs uppercase tracking-wider text-[#7f7f7f] font-body mt-2">
+      <div className="text-xs uppercase tracking-wider text-[var(--color-muted)] font-body mt-2">
         {label}
       </div>
     </div>
@@ -103,7 +103,7 @@ export default function AboutSection() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
         {/* Left Column */}
         <div className="md:sticky md:top-[120px] md:self-start">
-          <div className="text-label text-[#7f7f7f] mb-4">ABOUT</div>
+          <div className="text-label text-[var(--color-muted)] mb-4">ABOUT</div>
           <div
             className="font-display text-white select-none pointer-events-none absolute -z-10 hidden md:block"
             style={{
@@ -119,9 +119,9 @@ export default function AboutSection() {
           {/* Profile Image */}
           <div className="mt-8 overflow-hidden rounded-2xl border border-white/10" style={{ maxWidth: '300px' }}>
             <img
-              src="/images/ayush_profile.jpg"
+              src="/images/me.png"
               alt="Ayush Patel"
-              className="w-full object-cover object-top hover:scale-[1.02] transition-transform duration-600"
+              className="w-full object-cover object-top hover:scale-[1.02] transition-transform duration-600 ease-standard"
               style={{ aspectRatio: '3/4' }}
               loading="lazy"
             />
@@ -148,7 +148,8 @@ export default function AboutSection() {
                     style={{
                       transform: 'translateY(100%)',
                       opacity: 0,
-                      transition: 'transform 800ms cubic-bezier(0.19, 1, 0.22, 1), opacity 800ms cubic-bezier(0.19, 1, 0.22, 1)',
+                      transition: 'transform 800ms var(--ease-standard), opacity 800ms var(--ease-standard)',
+                      transitionDelay: `${ci * 20}ms`,
                     }}
                   >
                     {char}
@@ -162,7 +163,7 @@ export default function AboutSection() {
             className="font-body mt-6 max-w-[600px] leading-relaxed"
             style={{
               fontSize: 'clamp(0.875rem, 1vw, 0.975rem)',
-              color: '#e5e5e5',
+              color: 'var(--color-foreground)',
               lineHeight: 1.6,
             }}
           >
